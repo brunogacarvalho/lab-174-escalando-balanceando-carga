@@ -98,6 +98,12 @@ Como atividade complementar, realizamos a criação de uma Amazon Machine Image 
 
 A criação da AMI foi concluída com sucesso. Inicialmente, a imagem passou pelo estado `pending` durante o processamento e, posteriormente, atingiu o estado `available`, indicando que estava disponível para utilização.
 
+### 5. Resumo da AMI criada via AWS CLI
+
+![Resumo da AMI criada via AWS CLI](images/05_ami_summary.png)
+
+Tela de resumo e detalhes da imagem **Lab174-AMI-Bruno** (`ami-03ac6f6cd84c06860`) no console do Amazon EC2, confirmando a descrição definida via CLI e o status **Disponível** na região `us-west-2`.
+
 Esse desafio permitiu praticar a configuração de credenciais temporárias, a validação de identidade com AWS STS e a execução de operações do Amazon EC2 por meio da linha de comando.
 
 ## Página de estudo
