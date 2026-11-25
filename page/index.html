@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 174 | AWS</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <span class="eyebrow">AWS re/Start · Escola da Nuvem</span>
+    <h1>Escalabilidade e Balanceamento de Carga</h1>
+    <p>Lab 174 - Escalando e Balanceando Carga da Sua Arquitetura</p>
+    <div class="tags">
+      <span>Amazon EC2</span>
+      <span>Elastic Load Balancing</span>
+      <span>EC2 Auto Scaling</span>
+      <span>CloudWatch</span>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Visão geral</h2>
+      <p>Este laboratório apresenta recursos da AWS para distribuir o tráfego de aplicações e ajustar automaticamente a capacidade computacional conforme a demanda.</p>
+
+      <div class="grid">
+        <article>
+          <h3>Application Load Balancer</h3>
+          <p>Recebe as solicitações e distribui o tráfego entre os destinos registrados.</p>
+        </article>
+        <article>
+          <h3>Launch Template</h3>
+          <p>Define as configurações utilizadas para iniciar novas instâncias EC2.</p>
+        </article>
+        <article>
+          <h3>Auto Scaling Group</h3>
+          <p>Gerencia a quantidade de instâncias e ajusta a capacidade da aplicação.</p>
+        </article>
+        <article>
+          <h3>CloudWatch</h3>
+          <p>Monitora métricas que podem orientar as políticas de escalabilidade.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Fluxo da arquitetura</h2>
+      <div class="architecture">
+        <div>Usuários</div>
+        <span>↓</span>
+        <div class="highlight">Application Load Balancer</div>
+        <span>↓</span>
+        <div>Instâncias EC2 - Auto Scaling Group</div>
+        <span>↕</span>
+        <div>CloudWatch - Monitoramento</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Desafio opcional - AWS CLI</h2>
+      <p>Criação de uma Amazon Machine Image (AMI) a partir de uma instância EC2, utilizando AWS CLI. A imagem foi consultada até atingir o estado <strong>available</strong>.</p>
+    </section>
+
+    <section class="study">
+      <h2>Flashcards</h2>
+      <p class="intro">Teste seus conhecimentos sobre os conceitos deste laboratório.</p>
+
+      <div class="flashcard">
+        <span id="counter">01 / 08</span>
+        <div class="card-content">
+          <small>PERGUNTA</small>
+          <h3 id="question"></h3>
+          <p id="answer" hidden></p>
+        </div>
+        <button id="reveal">Mostrar resposta</button>
+      </div>
+
+      <div class="navigation">
+        <button id="previous" disabled>← Anterior</button>
+        <button id="next">Próximo →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Lab 174 · Formação AWS re/Start</p>
+    <p>Escola da Nuvem | Professor Raphael Ohlsen</p>
+    <a href="https://github.com/brunogacarvalho/lab-174-escalando-balanceando-carga">Repositório no GitHub</a>
+  </footer>
+
+  <script>
+    const cards = [
+      {
+        question: "Qual é a função de um Application Load Balancer?",
+        answer: "Distribuir as solicitações recebidas entre os destinos registrados, como instâncias EC2."
+      },
+      {
+        question: "O que é um Target Group?",
+        answer: "É um grupo de destinos, como instâncias EC2, para os quais o Load Balancer encaminha as solicitações."
+      },
+      {
+        question: "Para que serve um Launch Template?",
+        answer: "Define os parâmetros utilizados na inicialização de instâncias EC2, como AMI, tipo de instância e configurações."
+      },
+      {
+        question: "Qual é a função de um Auto Scaling Group?",
+        answer: "Gerenciar um grupo de instâncias EC2 e ajustar sua quantidade conforme a capacidade e as políticas configuradas."
+      },
+      {
+        question: "O que representam os limites mínimo, desejado e máximo?",
+        answer: "Mínimo é a menor quantidade permitida; desejado é a capacidade que o grupo procura manter; máximo é o limite superior."
+      },
+      {
+        question: "Qual é o papel do CloudWatch na escalabilidade?",
+        answer: "Monitorar métricas que podem ser utilizadas para orientar ou acionar políticas de escalabilidade."
+      },
+      {
+        question: "O que acontece quando a demanda da aplicação aumenta?",
+        answer: "Uma política de escalabilidade pode aumentar a capacidade do Auto Scaling Group, iniciando novas instâncias."
+      },
+      {
+        question: "O que é uma AMI?",
+        answer: "É uma imagem de máquina da Amazon que fornece as informações necessárias para iniciar instâncias EC2."
+      }
+    ];
+
+    let current = 0;
+    const question = document.getElementById("question");
+    const answer = document.getElementById("answer");
+    const counter = document.getElementById("counter");
+    const reveal = document.getElementById("reveal");
+    const previous = document.getElementById("previous");
+    const next = document.getElementById("next");
+
+    function renderCard() {
+      question.textContent = cards[current].question;
+      answer.textContent = cards[current].answer;
+      answer.hidden = true;
+      reveal.textContent = "Mostrar resposta";
+      counter.textContent = `${String(current + 1).padStart(2, "0")} / 08`;
+      previous.disabled = current === 0;
+      next.disabled = current === cards.length - 1;
+    }
+
+    reveal.addEventListener("click", () => {
+      answer.hidden = !answer.hidden;
+      reveal.textContent = answer.hidden ? "Mostrar resposta" : "Ocultar resposta";
+    });
+
+    previous.addEventListener("click", () => {
+      if (current > 0) {
+        current--;
+        renderCard();
+      }
+    });
+
+    next.addEventListener("click", () => {
+      if (current < cards.length - 1) {
+        current++;
+        renderCard();
+      }
+    });
+
+    renderCard();
+  </script>
+</body>
+</html>
